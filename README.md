@@ -6,6 +6,9 @@
 [![License](https://img.shields.io/badge/license-MIT-green)](./LICENSE)
 [![Node](https://img.shields.io/badge/node-%3E%3D18.17-blue)](https://nodejs.org)
 [![Powered by](https://img.shields.io/badge/powered%20by-Xiaomi%20MiMo-ff6b35)](https://platform.xiaomimimo.com)
+[![Live demo](https://img.shields.io/badge/demo-bahasa--buddy.vercel.app-34d399)](https://bahasa-buddy-alpha.vercel.app)
+
+🌐 **Live demo:** https://bahasa-buddy-alpha.vercel.app
 
 ---
 
