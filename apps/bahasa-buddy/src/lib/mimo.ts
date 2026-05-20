@@ -15,15 +15,18 @@ export function getMimoClient(): MimoForge {
       'MIMO_API_KEY is not set. Copy .env.example to .env.local and fill in your platform.xiaomimimo.com key.'
     );
   }
+  // Only forward env-var overrides if they're actually set — undefined values
+  // would otherwise wipe the SDK defaults via spread.
+  const models: Record<string, string> = {};
+  if (process.env.MIMO_PRO_MODEL) models.pro = process.env.MIMO_PRO_MODEL;
+  if (process.env.MIMO_BASE_MODEL) models.base = process.env.MIMO_BASE_MODEL;
+  if (process.env.MIMO_TTS_MODEL) models.tts = process.env.MIMO_TTS_MODEL;
+  if (process.env.MIMO_ASR_MODEL) models.asr = process.env.MIMO_ASR_MODEL;
+
   _client = new MimoForge({
     apiKey,
     baseUrl: process.env.MIMO_BASE_URL,
-    models: {
-      pro: process.env.MIMO_PRO_MODEL,
-      base: process.env.MIMO_BASE_MODEL,
-      tts: process.env.MIMO_TTS_MODEL,
-      asr: process.env.MIMO_ASR_MODEL,
-    },
+    models,
   });
   return _client;
 }
