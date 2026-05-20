@@ -124,6 +124,11 @@ export default function ChatPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ persona: personaId, text }),
       });
+      if (res.status === 503) {
+        const j = await res.json();
+        alert(j.message ?? 'Voice belum aktif untuk API key ini.');
+        return;
+      }
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const blob = await res.blob();
       const url = URL.createObjectURL(blob);
@@ -168,6 +173,11 @@ export default function ChatPage() {
       fd.append('file', new File([blob], 'voice.webm', { type: 'audio/webm' }));
       fd.append('language', 'auto');
       const res = await fetch('/api/asr', { method: 'POST', body: fd });
+      if (res.status === 503) {
+        const j = await res.json();
+        alert(j.message ?? 'Voice input belum aktif untuk API key ini.');
+        return;
+      }
       const data = await res.json();
       if (data.text) {
         setInput((prev) => (prev ? `${prev} ${data.text}` : data.text));

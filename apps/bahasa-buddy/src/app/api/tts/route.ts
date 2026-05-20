@@ -9,6 +9,10 @@ export const runtime = 'nodejs';
  *
  * Body: { persona: PersonaId, text: string }
  * Returns: audio/mpeg bytes synthesised in the persona's voice.
+ *
+ * Note: Token Plan (tp-) keys do not currently expose /v1/audio/speech.
+ * When TTS is unavailable, returns 503 with a friendly message instead
+ * of crashing the UI. Switch to a Standard MiMo API key to enable.
  */
 export async function POST(req: NextRequest) {
   const { persona, text } = (await req.json()) as {
@@ -22,12 +26,24 @@ export async function POST(req: NextRequest) {
   }
 
   const mimo = getMimoClient();
-  const audio = await mimo.tts.speak(text, { voice: p.voiceId, format: 'mp3' });
-
-  return new Response(audio, {
-    headers: {
-      'Content-Type': 'audio/mpeg',
-      'Cache-Control': 'no-store',
-    },
-  });
+  try {
+    const audio = await mimo.tts.speak(text, { voice: p.voiceId, format: 'mp3' });
+    return new Response(audio, {
+      headers: { 'Content-Type': 'audio/mpeg', 'Cache-Control': 'no-store' },
+    });
+  } catch (err) {
+    const msg = (err as Error).message ?? '';
+    // Token Plan endpoint returns 404 / 405 for /audio/speech
+    if (msg.includes('404') || msg.includes('405') || msg.includes('not support')) {
+      return Response.json(
+        {
+          error: 'tts_unavailable',
+          message:
+            'Voice synthesis butuh MiMo Standard API key. Token Plan key cuma support chat + multimodal.',
+        },
+        { status: 503 }
+      );
+    }
+    return Response.json({ error: 'tts_failed', message: msg }, { status: 500 });
+  }
 }
