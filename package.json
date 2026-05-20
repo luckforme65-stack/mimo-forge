@@ -1,0 +1,20 @@
+{
+  "name": "mimo-forge",
+  "version": "0.1.0",
+  "private": true,
+  "description": "MiMo Forge — TypeScript SDK + Bahasa Buddy flagship for the Xiaomi MiMo ecosystem",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "build:sdk": "npm run build -w @mimoforge/sdk",
+    "dev:bahasa": "npm run dev -w bahasa-buddy",
+    "test": "npm run test -w @mimoforge/sdk",
+    "lint": "echo 'lint placeholder — wire to your tool of choice'"
+  },
+  "engines": {
+    "node": ">=18.17"
+  },
+  "license": "MIT"
+}

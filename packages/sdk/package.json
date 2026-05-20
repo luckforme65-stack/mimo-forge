@@ -1,0 +1,33 @@
+{
+  "name": "@mimoforge/sdk",
+  "version": "0.1.0",
+  "description": "Unified TypeScript SDK for Xiaomi MiMo — chat, multimodal, TTS, ASR.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "node --test --experimental-strip-types ./test/*.test.ts",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "mimo",
+    "xiaomi",
+    "llm",
+    "ai",
+    "sdk",
+    "tts",
+    "asr",
+    "multimodal"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.17"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.3"
+  }
+}
