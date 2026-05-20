@@ -1,0 +1,7 @@
+{
+  "framework": "nextjs",
+  "buildCommand": "npm run build:sdk && cd apps/bahasa-buddy && npx next build",
+  "installCommand": "npm install --workspaces --include-workspace-root",
+  "outputDirectory": "apps/bahasa-buddy/.next",
+  "regions": ["sin1"]
+}
