@@ -45,12 +45,13 @@ export async function POST(req: NextRequest) {
   ];
 
   const useMultimodal = body.messages.some((m) => m.images && m.images.length > 0);
-  const model = useMultimodal ? mimo['chat']['http'].models.base : undefined;
-
+  // Token Plan supports both pro (text) and v2.5 (vision) via /v1/chat/completions.
+  // For image inputs we must use mimo-v2.5 (multimodal); for text-only stick with persona's
+  // configured reasoning depth (pro by default).
   const stream = await mimo.chat.stream(messages, {
     temperature: persona.temperature,
     enable_long_context: persona.enableLongContext,
-    model,
+    ...(useMultimodal ? { model: 'mimo-v2.5' } : {}),
   });
 
   const encoder = new TextEncoder();
